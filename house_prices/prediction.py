@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import xgboost as xgb
 from scipy.stats import skew
 from sklearn import preprocessing
 from sklearn import linear_model
@@ -116,11 +117,33 @@ df_train_X = enc.fit_transform(df_train_X)
 # df_train_X = scaler.fit_transform(df_train_X)
 
 # Grid Search
-reg = linear_model.Lasso(max_iter=50000)
-clf = model_selection.GridSearchCV(reg, {'alpha': [0.0003, 0.0005, 0.0007]})
+# reg = linear_model.Lasso(max_iter=50000)
+# clf = model_selection.GridSearchCV(reg, {'alpha': [0.0003, 0.0005, 0.0007]})
+# clf.fit(df_train_X, df_train_Y)
+# print(clf.best_params_)
+# print(clf.best_score_)
+
+
+reg = linear_model.ElasticNet(max_iter=50000)
+clf = model_selection.GridSearchCV(reg, {'alpha': [0.0005, 0.001]})
 clf.fit(df_train_X, df_train_Y)
 print(clf.best_params_)
 print(clf.best_score_)
+
+
+# reg = linear_model.Ridge(max_iter=50000)
+# clf = model_selection.GridSearchCV(reg, {'alpha': [0.001, 0.002, 0.003]})
+# clf.fit(df_train_X, df_train_Y)
+# print(clf.best_params_)
+# print(clf.best_score_)
+
+
+# reg = xgb.XGBRegressor(learning_rate=0.1)
+# clf = model_selection.GridSearchCV(reg, {'n_estimators': [100, 360],
+#                                          'max_depth': [2, 3]})
+# clf.fit(df_train_X, df_train_Y)
+# print(clf.best_params_)
+# print(clf.best_score_)
 
 
 df_test_ID = df_test["Id"][:, np.newaxis]
@@ -137,5 +160,5 @@ df_test_X = enc.transform(df_test_X)
 df_test_Y = np.exp(clf.predict(df_test_X))
 df_result = pd.DataFrame(np.concatenate((df_test_ID, [[item] for item in df_test_Y]), axis=1), columns=['Id', 'SalePrice'])
 df_result["Id"] = df_result["Id"].astype(int)
-df_result.to_csv("data/submission_lasso.csv", index=False)
+df_result.to_csv("data/submission_elastic.csv", index=False)
 

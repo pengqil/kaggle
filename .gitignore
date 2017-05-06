@@ -90,6 +90,7 @@ ENV/
 
 # Data
 data/
+submission/
 
 # Pycharm
 .DS_Store
