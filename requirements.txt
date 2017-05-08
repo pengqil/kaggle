@@ -8,3 +8,5 @@ jupyter
 xgboost
 nltk
 wordcloud
+sklearn
+tensorflow-gpu

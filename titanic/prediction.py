@@ -116,11 +116,11 @@ df_train_X = scaler.fit_transform(df_train_X)
 # print(clf.best_params_)
 # print(clf.best_score_)
 
-# reg = svm.SVC()
-# clf = model_selection.GridSearchCV(reg, {'C': [0.1, 0.5, 1.0, 5, 10]})
-# clf.fit(df_train_X, df_train_Y)
-# print(clf.best_params_)
-# print(clf.best_score_)
+reg = svm.SVC()
+clf = model_selection.GridSearchCV(reg, {'C': [0.1, 0.5, 1.0, 5, 10]})
+clf.fit(df_train_X, df_train_Y)
+print(clf.best_params_)
+print(clf.best_score_)
 
 # reg = ensemble.RandomForestClassifier()
 # clf = model_selection.GridSearchCV(reg, {'n_estimators': [5, 10, 20, 50, 100, 200]})
@@ -128,19 +128,19 @@ df_train_X = scaler.fit_transform(df_train_X)
 # print(clf.best_params_)
 # print(clf.best_score_)
 
-reg = xgboost.XGBClassifier(
-    max_depth=4,
-    min_child_weight=2,
-    subsample=0.8,
-    colsample_bytree=0.8,
-    objective='binary:logistic',
-    nthread=-1,
-    scale_pos_weight=1)
-clf = model_selection.GridSearchCV(reg, {'gamma': [0.3, 0.5, 0.7],
-                                         'n_estimators': [50, 100, 500]})
-clf.fit(df_train_X, df_train_Y)
-print(clf.best_params_)
-print(clf.best_score_)
+# reg = xgboost.XGBClassifier(
+#     max_depth=4,
+#     min_child_weight=2,
+#     subsample=0.8,
+#     colsample_bytree=0.8,
+#     objective='binary:logistic',
+#     nthread=-1,
+#     scale_pos_weight=1)
+# clf = model_selection.GridSearchCV(reg, {'gamma': [0.3, 0.5, 0.7],
+#                                          'n_estimators': [50, 100, 500]})
+# clf.fit(df_train_X, df_train_Y)
+# print(clf.best_params_)
+# print(clf.best_score_)
 
 
 df_test_ID = df_test["PassengerId"][:, np.newaxis]
@@ -157,5 +157,5 @@ df_test_X = scaler.transform(df_test_X)
 df_test_Y = clf.predict(df_test_X)
 df_result = pd.DataFrame(np.concatenate((df_test_ID, [[item] for item in df_test_Y]), axis=1), columns=['PassengerId', 'Survived'])
 df_result["PassengerId"] = df_result["PassengerId"].astype(int)
-df_result.to_csv("data/submission_xgboost.csv", index=False)
+df_result.to_csv("submission/submission_svc.csv", index=False)
 
