@@ -26,9 +26,11 @@ class DataSet:
 
         self.validation_images = train_images[:VALIDATION_SIZE]
         self.validation_labels = labels[:VALIDATION_SIZE]
+        self.validation_labels_onehot = self.dense_to_one_hot(labels[:VALIDATION_SIZE], 10)
 
         self.train_images = train_images[VALIDATION_SIZE:]
         self.train_labels = labels[VALIDATION_SIZE:]
+        self.train_labels_onehot = self.dense_to_one_hot(labels[VALIDATION_SIZE:], 10)
 
         self.num_examples = self.train_images.shape[0]
         self.index_in_epoch = 0
